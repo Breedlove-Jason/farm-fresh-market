@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Farm Fresh Market - Your Local Organic Marketplace</title>
+    <!-- Bootstrap 5 CSS (Lux theme from Bootswatch) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/lux/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/index.css">
+    <style>
+        .hero-main {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .stats-section {
+            background: #f8f9fa;
+            padding: 60px 0;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .cta-section {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 80px 0;
+        }
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { bottom: 10%; right: 20%; animation-delay: 1s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-seedling me-2"></i>Farm Fresh Market
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/farms">Farms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/products">Products</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-main">
+        <div class="floating-elements">
+            <i class="fas fa-tractor floating-icon" style="font-size: 4rem;"></i>
+            <i class="fas fa-apple-alt floating-icon" style="font-size: 3rem;"></i>
+            <i class="fas fa-carrot floating-icon" style="font-size: 3.5rem;"></i>
+            <i class="fas fa-seedling floating-icon" style="font-size: 2.5rem;"></i>
+        </div>
+        <div class="container position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-1 fw-bold mb-4">
+                        Farm Fresh Market
+                    </h1>
+                    <p class="lead fs-3 mb-4">
+                        Your trusted marketplace connecting local farms with fresh food lovers. 
+                        Discover organic produce, support local farmers, and enjoy farm-to-table freshness.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="/farms" class="btn btn-light btn-lg px-4 py-3">
+                            <i class="fas fa-tractor me-2"></i>Explore Farms
+                        </a>
+                        <a href="/products" class="btn btn-outline-light btn-lg px-4 py-3">
+                            <i class="fas fa-shopping-basket me-2"></i>Browse Products
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="hero-image">
+                        <i class="fas fa-barn" style="font-size: 12rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-4 fw-bold mb-3">Our Growing Community</h2>
+                    <p class="lead text-muted">Real-time statistics from our marketplace</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-tractor feature-icon text-primary"></i>
+                        <div class="stat-number" id="farmCount">0</div>
+                        <h5>Partner Farms</h5>
+                        <p class="text-muted">Local farms in our network</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-seedling feature-icon text-success"></i>
+                        <div class="stat-number" id="productCount">0</div>
+                        <h5>Fresh Products</h5>
+                        <p class="text-muted">Available products today</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-leaf feature-icon text-info"></i>
+                        <div class="stat-number">100%</div>
+                        <h5>Organic</h5>
+                        <p class="text-muted">Certified organic produce</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <i class="fas fa-truck feature-icon text-warning"></i>
+                        <div class="stat-number">24h</div>
+                        <h5>Fresh Delivery</h5>
+                        <p class="text-muted">From farm to your table</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-4 fw-bold mb-3">What We Offer</h2>
+                <p class="lead text-muted">Connecting communities through fresh, local produce</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-map-marked-alt feature-icon text-primary"></i>
+                        <h4 class="card-title">Local Farm Network</h4>
+                        <p class="card-text">
+                            Discover and connect with local farms in your area. Support your community 
+                            while enjoying the freshest produce available.
+                        </p>
+                        <a href="/farms" class="btn btn-primary">
+                            <i class="fas fa-tractor me-2"></i>View Farms
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-shopping-basket feature-icon text-success"></i>
+                        <h4 class="card-title">Fresh Products</h4>
+                        <p class="card-text">
+                            Browse our extensive catalog of fresh fruits, vegetables, and dairy products. 
+                            All sourced directly from local farms.
+                        </p>
+                        <a href="/products" class="btn btn-success">
+                            <i class="fas fa-seedling me-2"></i>Browse Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card text-center p-4">
+                    <div class="card-body">
+                        <i class="fas fa-handshake feature-icon text-info"></i>
+                        <h4 class="card-title">Farm Partnership</h4>
+                        <p class="card-text">
+                            Join our network as a farm partner. List your products, manage your inventory, 
+                            and reach customers directly.
+                        </p>
+                        <a href="/farms/new" class="btn btn-info">
+                            <i class="fas fa-plus me-2"></i>Join Network
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="cta-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-4 fw-bold mb-4">Ready to Get Started?</h2>
+                    <p class="lead mb-4">
+                        Join thousands of customers who trust Farm Fresh Market for their organic produce needs. 
+                        Start exploring our network of local farms and fresh products today.
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="/farms" class="btn btn-light btn-lg px-5 py-3">
+                            <i class="fas fa-tractor me-2"></i>Find Local Farms
+                        </a>
+                        <a href="/products" class="btn btn-outline-light btn-lg px-5 py-3">
+                            <i class="fas fa-shopping-basket me-2"></i>Shop Fresh Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="fas fa-seedling me-2"></i>Farm Fresh Market</h5>
+                    <p class="text-muted">
+                        Your trusted marketplace connecting local farms with fresh food lovers. 
+                        Supporting sustainable agriculture and healthy communities.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Explore</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/farms" class="text-muted text-decoration-none">All Farms</a></li>
+                        <li><a href="/products" class="text-muted text-decoration-none">All Products</a></li>
+                        <li><a href="/farms/new" class="text-muted text-decoration-none">Add Farm</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Categories</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/products?category=fruit" class="text-muted text-decoration-none">Fruits</a></li>
+                        <li><a href="/products?category=vegetable" class="text-muted text-decoration-none">Vegetables</a></li>
+                        <li><a href="/products?category=dairy" class="text-muted text-decoration-none">Dairy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h6>Contact Info</h6>
+                    <p class="text-muted mb-1">
+                        <i class="fas fa-phone me-2"></i>(555) 123-4567
+                    </p>
+                    <p class="text-muted mb-1">
+                        <i class="fas fa-envelope me-2"></i>hello@farmfresh.com
+                    </p>
+                    <p class="text-muted">
+                        <i class="fas fa-map-marker-alt me-2"></i>Fresh Valley, CA 12345
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2024 Farm Fresh Market. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">Built with ❤️ for local communities</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Fetch and display real-time statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                
+                document.getElementById('farmCount').textContent = stats.farmCount || 0;
+                document.getElementById('productCount').textContent = stats.productCount || 0;
+                
+                // Animate numbers
+                animateNumber('farmCount', stats.farmCount || 0);
+                animateNumber('productCount', stats.productCount || 0);
+            } catch (error) {
+                console.log('Stats not available, using default values');
+                // Fallback to default animation
+                animateNumber('farmCount', 12);
+                animateNumber('productCount', 48);
+            }
+        }
+
+        function animateNumber(elementId, targetNumber) {
+            const element = document.getElementById(elementId);
+            const duration = 2000;
+            const start = 0;
+            const increment = targetNumber / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= targetNumber) {
+                    current = targetNumber;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 16);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Load stats when page loads
+        document.addEventListener('DOMContentLoaded', loadStats);
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

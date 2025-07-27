@@ -1,0 +1,420 @@
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="heroPattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23heroPattern)"/></svg>');
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.hero-title {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 2rem;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-item {
+    text-align: center;
+    background: rgba(255,255,255,0.15);
+    padding: 1.5rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    min-width: 120px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.hero-icons {
+    position: relative;
+    height: 200px;
+}
+
+.hero-icon {
+    position: absolute;
+    font-size: 4rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.fruit-icon {
+    top: 20px;
+    right: 60px;
+    color: #28a745;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+.vegetable-icon {
+    top: 80px;
+    right: 20px;
+    color: #ffc107;
+    animation: bounce 3s ease-in-out infinite 1s;
+}
+
+.dairy-icon {
+    top: 140px;
+    right: 80px;
+    color: #17a2b8;
+    animation: bounce 3s ease-in-out infinite 2s;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Actions Bar */
+.actions-bar {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-top: -2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+}
+
+.section-title {
+    color: #333;
+    font-weight: bold;
+}
+
+.btn-add-product {
+    background: linear-gradient(45deg, #fd746c 0%, #ff9068 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-add-product:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(253, 116, 108, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+/* Search and Filter */
+.search-container {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    z-index: 5;
+}
+
+.search-input {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    border-radius: 25px;
+    border: 2px solid #e9ecef;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+}
+
+.btn-clear-search {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-clear-search:hover {
+    background: #c82333;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.filter-select {
+    border-radius: 25px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+}
+
+/* Products Grid */
+.products-section {
+    margin-bottom: 4rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+.category-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+}
+
+.category-fruit {
+    background: linear-gradient(45deg, #28a745, #20c997);
+}
+
+.category-vegetable {
+    background: linear-gradient(45deg, #ffc107, #fd7e14);
+}
+
+.category-dairy {
+    background: linear-gradient(45deg, #17a2b8, #6610f2);
+}
+
+.btn-action-menu {
+    background: none;
+    border: none;
+    color: #6c757d;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-action-menu:hover {
+    background: #f8f9fa;
+    color: #495057;
+    transform: scale(1.1);
+}
+
+.product-icon-section {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.product-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.1));
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.product-info {
+    padding: 1.5rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.product-name {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.product-name a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.product-name a:hover {
+    color: #4facfe;
+}
+
+.product-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.product-meta {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.product-id {
+    background: #f8f9fa;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+}
+
+.product-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #f8f9fa;
+}
+
+.btn-view-product {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.btn-view-product:hover {
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.empty-icon {
+    font-size: 6rem;
+    color: #dee2e6;
+    margin-bottom: 2rem;
+}
+
+.empty-state h3 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+/* No Results */
+.no-results {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+/* Summary Section */
+.summary-section {
+    margin-bottom: 3rem;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+}
+
+.summary-icon {
+    font-size: 2.5rem;
+}
+
+.summary-info h5 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1px;
+}

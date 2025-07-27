@@ -1,0 +1,102 @@
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+}
+.form-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    padding: 3rem;
+    margin-top: -2rem;
+    position: relative;
+    z-index: 10;
+}
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f8f9fa;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+.form-control, .form-select {
+    border-radius: 15px;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+.btn-submit {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 3rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+    width: 100%;
+}
+.btn-submit:hover {
+    transform: translateY(-2px);
+    color: white;
+}
+.btn-back {
+    background: linear-gradient(45deg, #fd746c 0%, #ff9068 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+.btn-back:hover {
+    transform: translateY(-2px);
+    color: white;
+}
+.category-preview {
+    display: none;
+    background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%);
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+.price-preview {
+    background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    display: none;
+}
+.input-icon {
+    color: #667eea;
+    margin-right: 0.5rem;
+}
+.form-floating {
+    margin-bottom: 1.5rem;
+}
+.form-floating > .form-control,
+.form-floating > .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+}
+.form-floating > label {
+    padding: 1rem 1.25rem;
+}
