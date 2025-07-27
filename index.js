@@ -11,6 +11,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
+require("dotenv").config();
 
 // Import route modules
 const farmRoutes = require("./routes/farms");
@@ -33,7 +34,7 @@ const app = express();
 
 // Database connection with improved error handling
 mongoose
-  .connect("mongodb://localhost:27017/farmStand")
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("✅ MongoDB connected successfully!");
   })

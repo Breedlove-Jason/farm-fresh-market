@@ -10,6 +10,7 @@
 const mongoose = require("mongoose");
 const Farm = require("./models/farm");
 const Product = require("./models/product");
+require("dotenv").config();
 
 /**
  * Demo data for farms
@@ -292,7 +293,7 @@ async function runDemo() {
     console.log("");
     
     // Connect to MongoDB
-    await mongoose.connect("mongodb://localhost:27017/farmStand");
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log("✅ Connected to MongoDB");
     console.log("");
     

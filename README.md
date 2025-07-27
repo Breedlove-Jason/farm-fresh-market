@@ -1,7 +1,7 @@
 # 🌱 Farm Fresh Market
 
-A modern web application connecting local farms with fresh food lovers. Built with Node.js, Express, MongoDB, and EJS templating.
-
+A modern web application connecting local farms with fresh food lovers. Built with Node.js, Express, MongoDB Atlas, and EJS templating.
+![screenshot.png](screenshot.png)
 ## 📋 Table of Contents
 
 - [Features](#features)
@@ -12,6 +12,7 @@ A modern web application connecting local farms with fresh food lovers. Built wi
 - [Database Schema](#database-schema)
 - [Routes](#routes)
 - [Technologies Used](#technologies-used)
+- [Docker Deployment](#docker-deployment)
 - [Contributing](#contributing)
 
 ## ✨ Features
@@ -69,8 +70,10 @@ farm-fresh-market/
 ├── public/                # Static assets
 │   ├── css/               # Stylesheets
 │   └── js/                # Client-side JavaScript
+├── package.json           # Project dependencies and scripts
 ├── index.js               # Main application server
-├── seeds.js               # Database seeding script
+├── demo.js                # Database seeding and demo script
+├── .env                   # Environment variables (not in repo)
 └── README.md              # This file
 ```
 
@@ -79,14 +82,14 @@ farm-fresh-market/
 ### Prerequisites
 
 - **Node.js** (v14 or higher)
-- **MongoDB** (v4.4 or higher)
 - **npm** or **yarn**
+- **MongoDB Atlas Account** (for cloud database)
 
 ### Setup Steps
 
 1. **Clone the repository**
    ```bash
-   git clone 
+   git clone https://github.com/Breedlove-Jason/farm-fresh-market.git
    cd farm-fresh-market
    ```
 
@@ -95,25 +98,27 @@ farm-fresh-market/
    npm install
    ```
 
-3. **Start MongoDB**
-   ```bash
-   # On macOS with Homebrew
-   brew services start mongodb-community
-   
-   # On Ubuntu/Debian
-   sudo systemctl start mongod
-   
-   # Or run directly
-   mongod
+3. **Configure environment variables**
+   Create a `.env` file in the root directory with your MongoDB Atlas credentials:
+   ```env
+   MONGODB_PASSWORD=your_mongodb_password
+   MONGODB_USERNAME=your_mongodb_username
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/farm-fresh-market?retryWrites=true&w=majority&appName=farmFreshMarket
+   PORT=3000
+   NODE_ENV=development
    ```
 
-4. **Seed the database (optional)**
+4. **Seed the database with demo data**
    ```bash
-   node seeds.js
+   npm run demo
+   # or
+   node demo.js
    ```
 
 5. **Start the application**
    ```bash
+   npm start
+   # or
    node index.js
    ```
 
@@ -275,10 +280,11 @@ Returns real-time application statistics.
 ### Backend
 - **Node.js** - Runtime environment
 - **Express.js** - Web framework
-- **MongoDB** - Database
+- **MongoDB Atlas** - Cloud database
 - **Mongoose** - ODM for MongoDB
 - **EJS** - Templating engine
 - **Method-Override** - HTTP method override
+- **dotenv** - Environment variable management
 
 ### Frontend
 - **Bootstrap 5** - CSS framework (Lux theme)
@@ -287,35 +293,52 @@ Returns real-time application statistics.
 
 ### Development Tools
 - **JSDoc** - Code documentation
-- **ESLint** - Code linting (recommended)
-- **Nodemon** - Development server (recommended)
+- **npm** - Package management
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
+The application requires a `.env` file in the root directory with the following variables:
 
 ```env
 NODE_ENV=development
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/farmStand
+MONGODB_PASSWORD=your_mongodb_password
+MONGODB_USERNAME=your_mongodb_username
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/farm-fresh-market?retryWrites=true&w=majority&appName=farmFreshMarket
 ```
 
 ### Database Configuration
 
-The application connects to MongoDB using the following default settings:
-- **Database**: `farmStand`
-- **Host**: `localhost`
-- **Port**: `27017`
+The application connects to MongoDB Atlas using the cloud connection string. The database includes:
+- **Database**: `farm-fresh-market`
+- **Collections**: `farms`, `products`
+- **Connection**: MongoDB Atlas (cloud-hosted)
 
 ## 🧪 Testing
+
+### Demo Data
+
+Run the comprehensive demo script to populate the database and test functionality:
+
+```bash
+npm run demo
+```
+
+This script will:
+- Connect to MongoDB Atlas
+- Clear existing demo data
+- Create 4 demo farms with different types
+- Create 12 demo products across categories
+- Display statistics and relationships
+- Test database operations
 
 ### Manual Testing
 
 1. **Start the application**
    ```bash
-   node index.js
+   npm start
    ```
 
 2. **Test the homepage**
@@ -334,48 +357,118 @@ The application connects to MongoDB using the following default settings:
    - Edit product details
    - Delete products
 
-### Test Script
+## 🐳 Docker Deployment
 
-Run the included test script to verify functionality:
+### Dockerfile
 
-```bash
-node test_complete_implementation.js
-```
-
-## 🚀 Deployment
-
-### Production Setup
-
-1. **Set environment variables**
-   ```bash
-   export NODE_ENV=production
-   export PORT=80
-   export MONGODB_URI=mongodb://your-production-db
-   ```
-
-2. **Install production dependencies**
-   ```bash
-   npm install --production
-   ```
-
-3. **Start the application**
-   ```bash
-   node index.js
-   ```
-
-### Docker Deployment (Optional)
-
-Create a `Dockerfile`:
+Create a `Dockerfile` in the project root:
 
 ```dockerfile
-FROM node:16-alpine
+FROM node:18-alpine
+
+# Set working directory
 WORKDIR /app
+
+# Copy package files
 COPY package*.json ./
-RUN npm install --production
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
 COPY . .
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Change ownership of the app directory
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
 EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/api/stats || exit 1
+
+# Start application
 CMD ["node", "index.js"]
 ```
+
+### Docker Compose
+
+Create a `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+
+services:
+  farm-fresh-market:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+```
+
+### Build and Run
+
+```bash
+# Build the Docker image
+docker build -t farm-fresh-market .
+
+# Run with Docker Compose
+docker-compose up -d
+
+# Or run directly
+docker run -d \
+  --name farm-fresh-market \
+  -p 3000:3000 \
+  --env-file .env \
+  farm-fresh-market
+```
+
+## 🚀 Production Deployment
+
+### Environment Setup
+
+1. **Set production environment variables**
+   ```bash
+   export NODE_ENV=production
+   export PORT=3000
+   ```
+
+2. **Ensure MongoDB Atlas is configured**
+   - Whitelist production server IP
+   - Use production database
+   - Enable authentication
+
+3. **Install production dependencies**
+   ```bash
+   npm ci --only=production
+   ```
+
+4. **Seed production database**
+   ```bash
+   node demo.js
+   ```
+
+5. **Start the application**
+   ```bash
+   npm start
+   ```
 
 ## 🤝 Contributing
 
@@ -403,14 +496,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Bootstrap team for the excellent CSS framework
-- MongoDB team for the robust database
+- MongoDB team for the robust database platform
 - Express.js community for the web framework
 - All the local farms that inspire this project
 
-## 📞 Support
+## 📊 Project Status
 
-For support, email hello@farmfresh.com or create an issue in the repository.
+✅ **Fully Functional Demo Application**
+- MongoDB Atlas cloud database integration
+- Comprehensive seed data with 4 farms and 12 products
+- All CRUD operations working
+- Docker deployment ready
+- Production environment configured
 
----
-
-**Built with ❤️ for local communities**
+The application is ready for deployment and demonstrates a complete farm-to-market platform with modern web technologies.
