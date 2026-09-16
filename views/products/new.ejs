@@ -16,7 +16,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <a href="/farms/<%= farmId %>" class="btn btn-back mb-3">
+                    <a href="<%= farmId ? `/farms/${farmId}` : `/products` %>" class="btn btn-back mb-3">
                         <i class="fas fa-arrow-left me-2"></i>Back to Farm
                     </a>
                     <h1 class="display-4 fw-bold mb-2">
@@ -46,7 +46,7 @@
                     </div>
 
                     <!-- Product Form -->
-                    <form action="/farms/<%= farmId %>/products" method="POST" id="productForm">
+                    <form action="<%= farmId ? `/farms/${farmId}/products` : `/products` %>" method="POST" id="productForm">
                         <!-- Hidden field for farm ID -->
                         <input type="hidden" name="farm" value="<%= farmId %>">
                         <!-- Product Name -->

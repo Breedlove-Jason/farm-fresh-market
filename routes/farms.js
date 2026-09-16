@@ -8,6 +8,7 @@
 
 const express = require('express');
 const router = express.Router();
+const pick = body => Object.fromEntries(["name", "type", "location", "email"].filter(key => Object.hasOwn(body, key)).map(key => [key, body[key]]));
 const Farm = require('../models/farm');
 const Product = require('../models/product');
 
@@ -22,14 +23,13 @@ const categories = ['fruit', 'vegetable', 'dairy'];
  * @returns {Object} Rendered farms index page with all farms
  * @throws {500} Server error if database query fails
  */
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const farms = await Farm.find({});
     console.log("Farms fetched successfully:", farms.length);
     res.render("farms/index", { farms });
   } catch (err) {
-    console.error("Error fetching farms:", err);
-    res.status(500).send("Error fetching farms");
+    next(err);
   }
 });
 
@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
  * @route GET /farms/new
  * @returns {Object} Rendered new farm form page
  */
-router.get("/new", (req, res) => {
+router.get("/new", (req, res, next) => {
   res.render("farms/new");
 });
 
@@ -57,15 +57,14 @@ router.get("/new", (req, res) => {
  * @returns {Redirect} Redirects to the newly created farm's detail page
  * @throws {500} Server error if farm creation fails
  */
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
-    const newFarm = new Farm(req.body);
+    const newFarm = new Farm(pick(req.body));
     await newFarm.save();
     console.log("New farm created:", newFarm.name);
     res.redirect(`/farms/${newFarm._id}`);
   } catch (err) {
-    console.error("Error creating farm:", err);
-    res.status(500).send("Error creating farm");
+    next(err);
   }
 });
 
@@ -79,7 +78,7 @@ router.post("/", async (req, res) => {
  * @throws {404} Farm not found
  * @throws {500} Server error if database query fails
  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const farm = await Farm.findById(id).populate('products');
@@ -90,8 +89,7 @@ router.get("/:id", async (req, res) => {
     
     res.render("farms/show", { farm });
   } catch (err) {
-    console.error("Error fetching farm:", err);
-    res.status(500).send("Error fetching farm");
+    next(err);
   }
 });
 
@@ -105,7 +103,7 @@ router.get("/:id", async (req, res) => {
  * @throws {404} Farm not found
  * @throws {500} Server error if deletion fails
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     
@@ -125,8 +123,7 @@ router.delete("/:id", async (req, res) => {
     
     res.redirect("/farms");
   } catch (err) {
-    console.error("Error deleting farm:", err);
-    res.status(500).send("Error deleting farm");
+    next(err);
   }
 });
 
@@ -140,7 +137,7 @@ router.delete("/:id", async (req, res) => {
  * @throws {404} Farm not found
  * @throws {500} Server error if database query fails
  */
-router.get("/:id/products", async (req, res) => {
+router.get("/:id/products", async (req, res, next) => {
   try {
     const { id } = req.params;
     const farm = await Farm.findById(id).populate('products');
@@ -151,8 +148,7 @@ router.get("/:id/products", async (req, res) => {
     
     res.render("farms/products", { farm, products: farm.products });
   } catch (err) {
-    console.error("Error fetching farm products:", err);
-    res.status(500).send("Error fetching farm products");
+    next(err);
   }
 });
 
@@ -165,13 +161,13 @@ router.get("/:id/products", async (req, res) => {
  * @returns {Object} Rendered new product form with farm context
  * @throws {500} Server error if form rendering fails
  */
-router.get("/:id/products/new", (req, res) => {
+router.get("/:id/products/new", async (req, res, next) => {
   try {
     const { id } = req.params;
+    if (!await Farm.exists({ _id: id })) return res.status(404).send("Farm not found");
     res.render("products/new", { categories, farmId: id });
   } catch (e) {
-    console.error("Error rendering new product form:", e.message);
-    res.status(500).send("Error rendering new product form for farm");
+    next(e);
   }
 });
 
@@ -189,7 +185,7 @@ router.get("/:id/products/new", (req, res) => {
  * @throws {404} Farm not found
  * @throws {500} Server error if product creation fails
  */
-router.post("/:id/products", async (req, res) => {
+router.post("/:id/products", async (req, res, next) => {
   try {
     const { id } = req.params;
     const farm = await Farm.findById(id);
@@ -199,7 +195,7 @@ router.post("/:id/products", async (req, res) => {
     }
     
     // Create new product with farm association
-    const newProduct = new Product(req.body);
+    const newProduct = new Product(Object.fromEntries(['name', 'price', 'category'].filter(key => Object.hasOwn(req.body, key)).map(key => [key, req.body[key]])));
     newProduct.farm = farm._id;
     await newProduct.save();
     
@@ -210,8 +206,7 @@ router.post("/:id/products", async (req, res) => {
     console.log(`New product "${newProduct.name}" added to farm: ${farm.name}`);
     res.redirect(`/farms/${id}`);
   } catch (e) {
-    console.error("Error creating product for farm:", e.message);
-    res.status(500).send("Error creating product for farm");
+    next(e);
   }
 });
 
@@ -226,12 +221,12 @@ router.post("/:id/products", async (req, res) => {
  * @throws {404} Product not found
  * @throws {500} Server error if deletion fails
  */
-router.delete("/:id/products/:productId", async (req, res) => {
+router.delete("/:id/products/:productId", async (req, res, next) => {
   try {
     const { id, productId } = req.params;
     
     // Find and delete the product
-    const deletedProduct = await Product.findByIdAndDelete(productId);
+    const deletedProduct = await Product.findOneAndDelete({ _id: productId, farm: id });
     if (!deletedProduct) {
       return res.status(404).send("Product not found");
     }
@@ -244,8 +239,7 @@ router.delete("/:id/products/:productId", async (req, res) => {
     console.log(`Product "${deletedProduct.name}" deleted from farm`);
     res.redirect(`/farms/${id}/products`);
   } catch (err) {
-    console.error("Error deleting product from farm:", err);
-    res.status(500).send("Error deleting product");
+    next(err);
   }
 });
 

@@ -11,7 +11,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
-require("dotenv").config();
+if (!process.env.VERCEL) require("dotenv").config();
 
 // Import route modules
 const farmRoutes = require("./routes/farms");
@@ -32,17 +32,6 @@ const Farm = require("./models/farm");
 
 const app = express();
 
-// Database connection with improved error handling
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("✅ MongoDB connected successfully!");
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1);
-  });
-
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -51,9 +40,11 @@ app.set("view engine", "ejs");
 app.use(requestLogger);
 app.use(securityHeaders);
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({ extended: true }));
+app.disable("x-powered-by");
+app.locals.serialize = value => JSON.stringify(value).replace(/</g, "\\u003c");
+app.use(express.urlencoded({ extended: false, limit: "16kb" }));
 app.use(methodOverride("_method"));
-app.use(checkDatabaseConnection);
+app.use(require("./utils/access"));
 
 /**
  * Homepage route - serves the main landing page
@@ -67,10 +58,9 @@ app.get("/", (req, res) => {
  * API endpoint for real-time statistics
  * Returns current counts of farms and products
  */
-app.get("/api/stats", async (req, res) => {
+app.get("/api/stats", checkDatabaseConnection, async (req, res) => {
   try {
-    const farmCount = await Farm.countDocuments();
-    const productCount = await Product.countDocuments();
+    const [farmCount, productCount] = await Promise.all([Farm.countDocuments(), Product.countDocuments()]);
     
     res.json({
       farmCount,
@@ -84,8 +74,8 @@ app.get("/api/stats", async (req, res) => {
 });
 
 // Route modules
-app.use("/farms", farmRoutes);
-app.use("/products", productRoutes);
+app.use("/farms", checkDatabaseConnection, farmRoutes);
+app.use("/products", checkDatabaseConnection, productRoutes);
 
 // 404 handler for undefined routes
 app.use(notFound);
@@ -93,9 +83,9 @@ app.use(notFound);
 // Global error handler (must be last)
 app.use(errorHandler);
 
-// Server startup
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Vercel imports the app; local development starts a listener.
+module.exports = app;
+if (require.main === module && !process.env.VERCEL) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`Farm Fresh Market listening on ${port}`));
+}

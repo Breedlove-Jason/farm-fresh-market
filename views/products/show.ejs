@@ -311,12 +311,7 @@
 
     <!-- Pass product data to JavaScript -->
     <script>
-        window.productData = {
-            id: '<%= product._id %>',
-            name: '<%= product.name %>',
-            price: '<%= product.price %>',
-            category: '<%= product.category %>'
-        };
+        window.productData = <%- serialize({ id: product._id, name: product.name, price: product.price, category: product.category }) %>;
     </script>
 
     <!-- Bootstrap 5 JS -->

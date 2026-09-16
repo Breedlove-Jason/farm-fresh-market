@@ -128,9 +128,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (changes.length > 0 && changesSummary && changesList) {
-            changesList.innerHTML = changes.map(change => 
-                `<li><i class="fas fa-arrow-right text-primary me-2"></i>${change}</li>`
-            ).join('');
+            changesList.replaceChildren(...changes.map(change => {
+                const item = document.createElement('li');
+                item.textContent = change;
+                return item;
+            }));
             changesSummary.style.display = 'block';
         } else if (changesSummary) {
             changesSummary.style.display = 'none';

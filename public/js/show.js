@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function initializeDeleteModal() {
         const deleteBtn = document.querySelector('.btn-delete');
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        const modalElement = document.getElementById('deleteModal');
+        if (!modalElement) return;
+        const deleteModal = new bootstrap.Modal(modalElement);
         const deleteForm = document.getElementById('deleteForm');
         const productNameSpan = document.getElementById('productNameToDelete');
         

@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "node index.js",
     "demo": "node demo.js",
-    "seed": "node demo.js"
+    "seed": "node demo.js",
+    "test": "node --test"
   },
   "keywords": [
     "farm",
@@ -17,7 +18,7 @@
     "local",
     "agriculture"
   ],
-  "author": "Farm Fresh Market Team",
+  "author": "Jason Breedlove",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
@@ -27,10 +28,10 @@
     "dotenv": "^16.3.1"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "24.x"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farm-fresh-market/farm-fresh-market.git"
+    "url": "https://github.com/Breedlove-Jason/farm-fresh-market.git"
   }
 }

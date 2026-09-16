@@ -91,15 +91,15 @@
                 <div class="col-lg-8">
                     <div class="search-container">
                         <i class="fas fa-search search-icon"></i>
-                        <label for="searchInput"></label><input type="text" id="searchInput" class="form-control search-input"
+                        <label for="searchInput" class="visually-hidden">Search catalog</label><input type="text" id="searchInput" class="form-control search-input"
                                                                 placeholder="Search products by name...">
-                        <button class="btn btn-clear-search" id="clearSearch" style="display: none;">
+                        <button class="btn btn-clear-search" id="clearSearch" aria-label="Clear search" style="display: none;">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <label for="categoryFilter"></label><select class="form-select filter-select" id="categoryFilter">
+                    <label for="categoryFilter" class="visually-hidden">Filter category</label><select class="form-select filter-select" id="categoryFilter">
                         <option value="all">All Categories</option>
                         <option value="fruit">🍎 Fruits</option>
                         <option value="vegetable">🥕 Vegetables</option>
@@ -164,7 +164,7 @@
                                                 <li>
                                                     <form method="POST" action="/farms/<%= farm._id %>/products/<%= product._id %>?_method=DELETE" style="display: inline;">
                                                         <button type="submit" class="dropdown-item text-danger delete-product" 
-                                                                onclick="return confirm('Are you sure you want to delete <%= product.name %>?')">
+                                                                onclick="return confirm('Are you sure you want to delete this product?')">
                                                             <i class="fas fa-trash me-2"></i>Delete Product
                                                         </button>
                                                     </form>
