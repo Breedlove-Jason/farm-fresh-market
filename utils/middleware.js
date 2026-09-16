@@ -58,7 +58,7 @@ const errorHandler = (err, req, res, next) => {
  */
 const notFound = (req, res) => {
   res.status(404).render('404', {
-    url: req.originalUrl,
+    message: 'We could not find that page. Explore our farms and products below.',
     title: 'Page Not Found'
   });
 };
@@ -100,18 +100,26 @@ const securityHeaders = (req, res, next) => {
  * @param {Object} res - Express response object
  * @param {Function} next - Express next function
  */
-const checkDatabaseConnection = (req, res, next) => {
+let connecting;
+const checkDatabaseConnection = async (req, res, next) => {
   const mongoose = require('mongoose');
-  
-  if (mongoose.connection.readyState !== 1) {
-    console.error('Database not connected');
-    return res.status(503).json({
-      error: 'Service Unavailable',
-      message: 'Database connection is not available'
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      if (!process.env.MONGODB_URI) throw new Error('Database configuration missing');
+      if (!connecting) {
+        connecting = mongoose.connect(process.env.MONGODB_URI, {
+          maxPoolSize: 5, serverSelectionTimeoutMS: 8000
+        }).finally(() => { connecting = null; });
+      }
+      await connecting;
+    }
+    next();
+  } catch {
+    res.status(503).render('404', {
+      title: 'Market temporarily unavailable',
+      message: 'Our catalog is taking a short break. Please try again shortly.'
     });
   }
-  
-  next();
 };
 
 /**

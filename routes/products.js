@@ -8,6 +8,7 @@
 
 const express = require('express');
 const router = express.Router();
+const pick = body => Object.fromEntries(["name", "price", "category"].filter(key => Object.hasOwn(body, key)).map(key => [key, body[key]]));
 const Product = require('../models/product');
 const Farm = require('../models/farm');
 
@@ -19,14 +20,13 @@ const Farm = require('../models/farm');
  * @returns {Object} Rendered products index page with all products
  * @throws {500} Server error if database query fails
  */
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const products = await Product.find({}).populate('farm');
     console.log("Products fetched successfully:", products.length);
     res.render("products/index", { products });
   } catch (err) {
-    console.error("Error fetching products:", err);
-    res.status(500).send("Error fetching products");
+    next(err);
   }
 });
 
@@ -37,8 +37,8 @@ router.get("/", async (req, res) => {
  * @route GET /products/new
  * @returns {Object} Rendered new product form page
  */
-router.get("/new", (req, res) => {
-  res.render("products/new");
+router.get("/new", (req, res, next) => {
+  res.render("products/new", { farmId: null });
 });
 
 /**
@@ -53,15 +53,14 @@ router.get("/new", (req, res) => {
  * @returns {Redirect} Redirects to the newly created product's detail page
  * @throws {500} Server error if product creation fails
  */
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
-    const newProduct = new Product(req.body);
+    const newProduct = new Product(Object.fromEntries(['name', 'price', 'category'].filter(key => Object.hasOwn(req.body, key)).map(key => [key, req.body[key]])));
     await newProduct.save();
     console.log("New standalone product created:", newProduct.name);
     res.redirect(`/products/${newProduct._id}`);
   } catch (err) {
-    console.error("Error creating product:", err);
-    res.status(500).send("Error creating product");
+    next(err);
   }
 });
 
@@ -75,7 +74,7 @@ router.post("/", async (req, res) => {
  * @throws {404} Product not found
  * @throws {500} Server error if database query fails
  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await Product.findById(id).populate('farm');
@@ -86,8 +85,7 @@ router.get("/:id", async (req, res) => {
     
     res.render("products/show", { product });
   } catch (err) {
-    console.error("Error fetching product:", err);
-    res.status(500).send("Error fetching product");
+    next(err);
   }
 });
 
@@ -101,7 +99,7 @@ router.get("/:id", async (req, res) => {
  * @throws {404} Product not found
  * @throws {500} Server error if database query fails
  */
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await Product.findById(id);
@@ -112,8 +110,7 @@ router.get("/:id/edit", async (req, res) => {
     
     res.render("products/edit", { product });
   } catch (err) {
-    console.error("Error fetching product for edit:", err);
-    res.status(500).send("Error fetching product for edit");
+    next(err);
   }
 });
 
@@ -131,12 +128,11 @@ router.get("/:id/edit", async (req, res) => {
  * @throws {404} Product not found
  * @throws {500} Server error if update fails
  */
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log("Updating product with data:", req.body);
-    
-    const product = await Product.findByIdAndUpdate(id, req.body, {
+
+    const product = await Product.findByIdAndUpdate(id, { $set: pick(req.body) }, {
       runValidators: true,
       new: true,
     });
@@ -148,8 +144,7 @@ router.put("/:id", async (req, res) => {
     console.log("Product updated:", product.name);
     res.redirect(`/products/${product._id}`);
   } catch (err) {
-    console.error("Error updating product:", err);
-    res.status(500).send("Error updating product");
+    next(err);
   }
 });
 
@@ -163,7 +158,7 @@ router.put("/:id", async (req, res) => {
  * @throws {404} Product not found
  * @throws {500} Server error if deletion fails
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     
@@ -187,8 +182,7 @@ router.delete("/:id", async (req, res) => {
     
     res.redirect("/products");
   } catch (err) {
-    console.error("Error deleting product:", err);
-    res.status(500).send("Error deleting product");
+    next(err);
   }
 });
 

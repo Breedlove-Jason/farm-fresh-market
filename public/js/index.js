@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all features
     initializeSearch();
     initializeFilters();
+    const initialCategory = new URLSearchParams(location.search).get('category');
+    const categorySelect = document.getElementById('categoryFilter');
+    if (categorySelect && [...categorySelect.options].some(option => option.value === initialCategory)) {
+        categorySelect.value = initialCategory;
+        filterProducts();
+    }
     initializeDeleteModal();
     initializeAnimations();
     initializeStats();
