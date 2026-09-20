@@ -1,3 +1,7 @@
+![Farm Fresh Market — FROM LOCAL FARMS TO A CONNECTED CATALOG](docs/project-banner.svg)
+
+[Open live app](https://farmfresh.jasonbreedlove.dev) · [Portfolio](https://www.jasonbreedlove.dev) · [Browse source](https://github.com/Breedlove-Jason/farm-fresh-market)
+
 # Farm Fresh Market
 
 Jason Breedlove's farm-to-market catalog, built with Express, EJS, MongoDB/Mongoose, and Bootstrap (Bootswatch Lux). Browse farms and products, search the catalog, filter categories, and manage farm/product relationships through protected owner tools.
@@ -14,9 +18,9 @@ Set `MARKET_ADMIN_PASSWORD` to a unique password of at least 24 characters to en
 
 1. Import `Breedlove-Jason/farm-fresh-market`. Choose **Express**, root directory `./`, default install command, no build command or output-directory override.
 2. Add `MONGODB_URI` and `MARKET_ADMIN_PASSWORD` as sensitive environment variables for the intended deployment environment. Use a dedicated MongoDB database, not YelpCamp's database. Preview and Production should use separate databases if you will test edits in Preview.
-3. Deploy the `fix/vercel-market-launch` branch for verification. The app exports Express, waits for a reusable MongoDB connection, and includes its EJS templates.
+3. Deploy `master` (the completed launch work is merged). The app exports Express, waits for a reusable MongoDB connection, and includes its EJS templates.
 4. Check the home, farms, products, filters, owner sign-in, product creation/edit/delete, and farm deletion using disposable test records. No real database writes have been verified by the local test suite.
-5. After verification, merge to `master` for Production. In project **Domains → Add Existing**, connect `farmfresh.jasonbreedlove.dev` to Production.
+5. Keep `master` as the Production branch. In project **Domains → Add Existing**, connect `farmfresh.jasonbreedlove.dev` to Production.
 
 Reference: [Express on Vercel](https://vercel.com/docs/frameworks/backend/express).
 
